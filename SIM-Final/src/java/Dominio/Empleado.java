@@ -22,7 +22,6 @@ public class Empleado {
     public String toString() {
         return "Empleado{" + "estado=" + estado + '}';
     }
-    
 
     public double getTiempoRevision() {
         return tiempoRevision;
@@ -52,17 +51,17 @@ public class Empleado {
         this.estado = "OCUPADO";
     }
 
-    public void revisarPoliticaActual(double rnd) {
-        this.tiempoRevision = 5 + rnd * 6;
-        ocupar();
-    }
-
-    public void revisarPoliticaAlternativa(double rnd) {
-        if (rnd < 0.7) {
+    public void revisarPoliticaAlternativa(double rnd, double prob) {
+        if (prob < 0.7d) {
             this.tiempoRevision = 9 + rnd * 6;
         } else {
             this.tiempoRevision = -12 * Math.log(1 - rnd);
         }
+        ocupar();
+    }
+
+    public void revisarPoliticaActual(double rnd) {
+        this.tiempoRevision = 5 + rnd * 6;
         ocupar();
     }
 }

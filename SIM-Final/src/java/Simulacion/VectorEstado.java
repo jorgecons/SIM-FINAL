@@ -265,6 +265,22 @@ public class VectorEstado {
         return tiempoLlegadaProximoCliente;
     }
 
+    public double getMenorTiempoAlternativa() {
+        double menorAten = menorTiempoAtencion();
+        if (menorAten == -1) {
+            siguienteEvento = 1;
+            return tiempoLlegadaProximoCliente;
+        } else {
+            if (menorAten < tiempoLlegadaProximoCliente) {
+                siguienteEvento = 3;
+                return menorAten;
+            } else {
+                siguienteEvento = 1;
+                return tiempoLlegadaProximoCliente;
+            }
+        }
+    }
+
     private double menorTiempoLlenado() {
         if (tiemposFinLlenado.isEmpty()) {
             return -1;
@@ -334,6 +350,12 @@ public class VectorEstado {
         tiemposFinLlenado.add(tiempoActual + tiempoLlenado);
     }
 
+    public void generarTipoAtencion() {
+        do {
+            rndFinLlenado = Math.random();
+        } while (rndFinLlenado == 1);
+    }
+
     private void generarLlegada() {
         do {
             rndLlegadaCliente = Math.random();
@@ -341,6 +363,34 @@ public class VectorEstado {
         tiempoEntreLlegadaCliente = -12 * Math.log(1 - rndLlegadaCliente);
         tiempoLlegadaProximoCliente = tiempoEntreLlegadaCliente + tiempoActual;
 
+    }
+
+    public void asignarAEmpleadoAlternativa() {
+        if (cola.isEmpty()) {
+            for (int i = 0; i < empleados.length; i++) {
+                if (empleados[i].estaLibre()) {
+                    cliente.setSiendoAtendido(i);
+                    cliente.atender();
+                    do {
+                        rndFinAtencion = Math.random();
+                    } while (rndFinAtencion == 0 || rndFinAtencion == 1);
+
+                    empleados[i].revisarPoliticaAlternativa(rndFinAtencion, rndFinLlenado);
+                    tiempoAtencion = empleados[i].getTiempoRevision();
+                    tiemposFinAtencion[i] = tiempoActual + tiempoAtencion;
+                    break;
+                }
+
+            }
+            if (rndFinAtencion == 0) {
+                cliente.esperar();
+                cola.add(cliente);
+            }
+
+        } else {
+            cliente.esperar();
+            cola.add(cliente);
+        }
     }
 
     //se realiza cuando un cliente finaliza el llenado del formulario
@@ -388,13 +438,9 @@ public class VectorEstado {
             empleados[numero].liberar();
             tiemposFinAtencion[numero] = 0d;
         } else {
-            System.out.println("Entre aca al else, es decir, hay cola");
             Cliente client = cola.remove(0);
-            System.out.println("Cliente de la cola: " + client.toString());
             rndFinAtencion = Math.random();
-            System.out.println("Empleado: " + numero);
             empleados[numero].revisarPoliticaActual(rndFinAtencion);
-            System.out.println("Tiempo Revision: " + empleados[numero].getTiempoRevision());
             tiempoAtencion = empleados[numero].getTiempoRevision();
             tiemposFinAtencion[numero] = tiempoActual + tiempoAtencion;
             for (int i = 0; i < clientes.size(); i++) {
@@ -405,7 +451,36 @@ public class VectorEstado {
             }
 
         }
+    }
 
+    public void liberarEmpleadoAlternativa(int numero) {
+        Cliente client=new Cliente();
+        for (int i = 0; i < clientes.size(); i++) {
+            if (numero == clientes.get(i).getSiendoAtendido()) {
+                client=clientes.remove(i);
+                break;
+            }
+        }
+        tiempoTotalEnBanco += (tiempoActual - client.getTiempoLlegada());
+        clientesAtendidos++;
+        if (cola.isEmpty()) {
+            empleados[numero].liberar();
+            tiemposFinAtencion[numero] = 0d;
+        } else {
+            client = cola.remove(0);
+            generarTipoAtencion();
+            rndFinAtencion = Math.random();
+            empleados[numero].revisarPoliticaAlternativa(rndFinAtencion, rndFinLlenado);
+            tiempoAtencion = empleados[numero].getTiempoRevision();
+            tiemposFinAtencion[numero] = tiempoActual + tiempoAtencion;
+            for (int i = 0; i < clientes.size(); i++) {
+                if (clientes.get(i).getTiempoLlegada() == client.getTiempoLlegada()) {
+                    clientes.get(i).setSiendoAtendido(numero);
+                    clientes.get(i).atender();
+                }
+            }
+
+        }
     }
 
     private void eliminarCliente(int numero) {

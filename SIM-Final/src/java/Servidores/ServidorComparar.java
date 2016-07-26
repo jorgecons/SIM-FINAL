@@ -5,7 +5,7 @@
  */
 package Servidores;
 
-import Gestores.GestorPoliticaActual;
+import Gestores.*;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -59,11 +59,24 @@ public class ServidorComparar extends HttpServlet {
             promActual+=gpa.getPromedio();
             session.setAttribute("promActual", promActual);
             request.getRequestDispatcher("PoliticaActual.jsp").forward(request, response);
-        } else if (request.getParameter("politicaAlternatia") != null) {
+        } else if (request.getParameter("politicaAlternativa") != null) {
+            GestorPoliticaAlternativa gpal= new GestorPoliticaAlternativa(tiempoSimulacion*60);
+            gpal.simular();
+            request.setAttribute("clientesMax", gpal.getClientesTotal());
+            request.setAttribute("vectorMostrar", gpal.getVectorMostrar());
+            request.setAttribute("promedio", gpal.getPromedio());
+            request.setAttribute("clientesAtendidos", gpal.getCantidadClientesAtendidos());
+            numAlternativa = (Integer) session.getAttribute("numAlternativa");
             numAlternativa++;
-            request.getRequestDispatcher("PoliticaActual.jsp").forward(request, response);
+            session.setAttribute("numAlternativa", numAlternativa);
+            promAlternativa = (Double) session.getAttribute("promAlternativa");
+            promAlternativa+=gpal.getPromedio();
+            session.setAttribute("promAlternativa", promAlternativa);
+            request.getRequestDispatcher("PoliticaAlternativa.jsp").forward(request, response);
         } else if (request.getParameter("comparar") != null) {
-            request.getRequestDispatcher("PoliticaActual.jsp").forward(request, response);
+            request.getRequestDispatcher("Comparar.jsp").forward(request, response);
+        }else if (request.getParameter("reiniciar") != null) {
+            request.getRequestDispatcher("/Inicio").forward(request, response);
         }
     }
 
