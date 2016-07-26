@@ -17,16 +17,16 @@
         <%@ include file="/WEB-INF/menu.jspf" %>
     <center> <h1>Trabajo Final Simulación</h1></center>
     <h2>Ejercicio 304</h2>
-    <p>
+    <p style="text-align: justify">
         Un banco está analizando la implementación de un cambio en la forma de atención de solicitantes de crédito.
     </p>
-    <p>
+    <p style="text-align: justify">
         <b>Actualmente el procedimiento es el siguiente:</b> los solicitantes llegan, obtienen un formulario predefinido,
         que tienen que llenar para lo cual tardan 39 minutos de media con distribución exponencial.
         Luego se dirigen a alguno de los tres empleados que leen y revisan el formulario completándolo en
         caso de ser necesario, para lo cual demoran entre 5 y 11 minutos distribución uniforme.
     </p>
-    <p>
+    <p style="text-align: justify">
         <b> Se propone el siguiente procedimiento alternativo:</b> los solicitantes llegan un pre-formulario por
         Internet, y una vez validado por personal del banco, deben acertarse al empleado del sector, el cuál
         le hace completar los datos faltantes.
@@ -51,11 +51,11 @@
             </tr>
         </table>
     </center>
-    <p>
+    <p style="text-align: justify">
         El tiempo medio entre llegadas de los solicitantes es de 5 solicitantes por hora (distribución
         exponencial).
     </p>
-    <p>
+    <p style="text-align: justify">
         Determinar si con la mejora, el tiempo que demora un cliente en el banco es menor.
     </p>
     <form method="post" action="${pageContext.request.contextPath}/Servidor" name="datos">
@@ -76,7 +76,9 @@
             <input style="font-family: Arial; font-size: 16px"  type="submit" name="politicaActual" value="Simular Política Actual">
             <input style="font-family: Arial; font-size: 16px" type="submit" name="politicaAlternativa" value="Simular Política Alternativa">
             <input style="font-family: Arial; font-size: 16px" type="submit" name="comparar" value="Comparar">
-
+            <p>
+            <input style="font-family: Arial; font-size: 16px"  type="submit" name="reiniciar" value="Reiniciar">
+            </p>
         </center>
     </form>
 </body>

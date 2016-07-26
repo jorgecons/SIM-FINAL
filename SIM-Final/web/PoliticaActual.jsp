@@ -17,6 +17,7 @@
         <%@ include file="/WEB-INF/menu.jspf" %>
         
         <h1>Politica Actual</h1>
+        <h3>Para un tiempo de simulación de ${tiempoSimulacion*60} minutos, se obtiene que:</h3>
         <h3>El tiempo promedio de los clientes en el banco es de 
             <span style="color: royalblue;font-weight: bolder; font-size: 20px"><fmt:formatNumber value="${promedio}" maxFractionDigits="3"></fmt:formatNumber></span>
             minutos para <span style="color: royalblue;font-weight: bolder; font-size: 20px">${clientesAtendidos}</span> clientes atendidos.</h3>
