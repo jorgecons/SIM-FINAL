@@ -1,0 +1,12 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+
+<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
+
+<ul>
+    <li><a class="active" href="${pageContext.request.contextPath}/Inicio.jsp">Inicio</a></li>
+        <%--<li><a href="${pageContext.request.contextPath}/PoliticaActual.jsp">Politica Actual</a></li>
+        <li><a href="${pageContext.request.contextPath}/PoliticaAlternativa.jsp">Politica Alternativa</a></li>
+        --%>      
+    <li style="background-color: #333"><a  href="${pageContext.request.contextPath}/Comparar.jsp">Comparación</a></li>
+</ul>
